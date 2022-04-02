@@ -48,9 +48,10 @@ export default {
   build: {
   },
   axios: {
-    proxy: true
+    proxy: true,
+    baseURL: 'https://social-influenzaa.herokuapp.com'
   },
   proxy: {
-    '/api/': 'https://social-influenzaa.herokuapp.com',
+    // '/api/': 'https://social-influenzaa.herokuapp.com',
   }
 }
