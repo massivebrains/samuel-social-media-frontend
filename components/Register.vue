@@ -2,6 +2,8 @@
   <div class="w-full md:flex md:justify-center mb-6">
     <div class="m-12 w-1/2">
       <h1 class="text-4xl mb-8">Social-Influenza</h1>
+      <Error :error="error" v-if="error" class="mb-2" />
+      <Success :message="message" v-if="message" class="mb-2" />
       <FormInput
         label="First Name"
         type="text"
@@ -43,9 +45,9 @@
         label="Confirm Password"
         type="password"
         :form="form"
-        field="password_confirmation"
+        field="confirm_password"
       />
-      <FormButton label="Register Now" :submit="submit" />
+      <FormButton :label="loading" :submit="submit" />
     </div>
   </div>
 </template>
@@ -63,13 +65,34 @@ export default {
         twitter_handle: "",
         instagram_handle: "",
         password: "",
-        password_confirmation: "",
+        confirm_password: "",
       },
+      loading: "Register Now",
+      error: null,
+      message: null,
     };
   },
   methods: {
-    submit() {
-      alert(JSON.stringify(this.form));
+    async submit() {
+      this.loading = "Requesting.....";
+      this.error = null;
+      this.message = null;
+      try {
+        const response = await this.$axios.post(
+          "api/register-account",
+          this.form
+        );
+        const data = response.data;
+        if (data.status == "successful") {
+          this.message = data.message;
+        } else {
+          this.error = data.message;
+        }
+        this.loading = "Register Now";
+      } catch (ex) {
+        this.error = ex.response.data.message;
+        this.loading = "Register Now";
+      }
     },
   },
 };
