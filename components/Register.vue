@@ -79,7 +79,7 @@ export default {
       this.message = null;
       try {
         const response = await this.$axios.post(
-          "api/register-account",
+          "https://social-influenzaa.herokuapp.com/api/register-account",
           this.form
         );
         const data = response.data;
